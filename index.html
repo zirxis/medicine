@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الموسوعة الطبية المتقدمة - مركز الصحة الذكي</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+        
+        .dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark-mode .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .interactive-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .interactive-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .interactive-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .interactive-btn:hover::before {
+            left: 100%;
+        }
+        
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #667eea, transparent);
+            margin: 2rem 0;
+        }
+        
+        .calculator-input {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .calculator-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .nutrition-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .nutrition-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .quiz-option:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .quiz-option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #764ba2;
+        }
+        
+        .disease-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.4s ease;
+        }
+        
+        .disease-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .search-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .chart-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-switch.active {
+            background: #667eea;
+        }
+        
+        .toggle-switch.active::before {
+            transform: translateX(30px);
+        }
+        
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            height: 8px;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="text-white">
+    <!-- Header Navigation -->
+    <nav class="glass-card mx-4 mt-4 p-4 mb-8">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <i class="fas fa-heartbeat text-3xl gradient-text floating"></i>
+                <h1 class="text-2xl font-bold gradient-text">الموسوعة الطبية المتقدمة</h1>
+            </div>
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <div class="toggle-switch" id="themeToggle">
+                    <i class="fas fa-moon absolute top-1 right-1 text-xs"></i>
+                </div>
+                <button class="interactive-btn px-4 py-2 rounded-lg text-white" onclick="showNotification('مرحباً بك في موسوعتنا الطبية!')">
+                    <i class="fas fa-bell mr-2"></i>
+                    الإشعارات
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle mr-2"></i>
+        <span id="notificationText"></span>
+    </div>
+
+    <div class="container mx-auto px-4 space-y-8">
+        <!-- Hero Section with Daily Tips -->
+        <section class="glass-card p-8 text-center fade-in">
+            <div class="mb-6">
+                <i class="fas fa-lightbulb text-6xl gradient-text pulse-animation"></i>
+            </div>
+            <h2 class="text-4xl font-bold mb-4 gradient-text">نصيحة اليوم</h2>
+            <p id="dailyTip" class="text-xl mb-6 leading-relaxed"></p>
+            <button class="interactive-btn px-8 py-3 rounded-full text-white font-semibold" onclick="getNewTip()">
+                <i class="fas fa-refresh mr-2"></i>
+                نصيحة جديدة
+            </button>
+        </section>
+
+        <!-- Advanced Search -->
+        <section class="glass-card p-6">
+            <h3 class="text-2xl font-bold mb-4 gradient-text text-center">
+                <i class="fas fa-search mr-2"></i>
+                البحث المتقدم
+            </h3>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="ابحث عن مرض، نصيحة، أو معلومة طبية..." id="searchInput" oninput="performSearch()">
+                <div class="absolute top-1/2 left-4 transform -translate-y-1/2">
+                    <i class="fas fa-search text-gray-500"></i>
+                </div>
+            </div>
+            <div id="searchResults" class="mt-4 hidden"></div>
+        </section>
+
+        <!-- Health Calculators -->
+        <section class="glass-card p-6">
+            <h3 class="text-2xl font-bold mb-6 gradient-text text-center">
+                <i class="fas fa-calculator mr-2"></i>
+                حاسبات الصحة الذكية
+            </h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- BMI Calculator -->
+                <div class="nutrition-card p-6 rounded-xl">
+                    <h4 class="text-xl font-bold mb-4 text-center">
+                        <i class="fas fa-weight mr-2"></i>
+                        حاسبة مؤشر كتلة الجسم
+                    </h4>
+                    <div class="space-y-4">
+                        <input type="number" class="calculator-input w-full p-3" placeholder="الوزن (كيلو)" id="weight">
+                        <input type="number" class="calculator-input w-full p-3" placeholder="الطول (سم)" id="height">
+                        <button class="interactive-btn w-full py-3 rounded-lg text-white" onclick="calculateBMI()">
+                            احسب مؤشر كتلة الجسم
+                        </button>
+                        <div id="bmiResult" class="text-center font-bold text-lg"></div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="bmiProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calorie Calculator -->
+                <div class="nutrition-card p-6 rounded-xl">
+                    <h4 class="text-xl font-bold mb-4 text-center">
+                        <i class="fas fa-fire mr-2"></i>
+                        حاسبة السعرات الحرارية
+                    </h4>
+                    <div class="space-y-4">
+                        <input type="number" class="calculator-input w-full p-3" placeholder="العمر" id="age">
+                        <select class="calculator-input w-full p-3" id="gender">
+                            <option value="">اختر الجنس</option>
+                            <option value="male">ذكر</option>
+                            <option value="female">أنثى</option>
+                        </select>
+                        <select class="calculator-input w-full p-3" id="activity">
+                            <option value="">مستوى النشاط</option>
+                            <option value="1.2">قليل الحركة</option>
+                            <option value="1.375">نشاط خفيف</option>
+                            <option value="1.55">نشاط متوسط</option>
+                            <option value="1.725">نشاط عالي</option>
+                            <option value="1.9">نشاط شديد</option>
+                        </select>
+                        <button class="interactive-btn w-full py-3 rounded-lg text-white" onclick="calculateCalories()">
+                            احسب احتياجك اليومي
+                        </button>
+                        <div id="calorieResult" class="text-center font-bold text-lg"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Disease Encyclopedia -->
+        <section class="glass-card p-6">
+            <h3 class="text-2xl font-bold mb-6 gradient-text text-center">
+                <i class="fas fa-book-medical mr-2"></i>
+                موسوعة الأمراض الشائعة
+            </h3>
+            <div class="grid md:grid-cols-3 gap-6" id="diseaseCards">
+                <!-- Disease cards will be generated by JavaScript -->
+            </div>
+            <div id="diseaseDetails" class="mt-6 hidden glass-card p-6 rounded-xl">
+                <button class="interactive-btn px-4 py-2 rounded-lg text-white mb-4" onclick="closeDiseaseDetails()">
+                    <i class="fas fa-arrow-right mr-2"></i>
+                    العودة
+                </button>
+                <div id="diseaseContent"></div>
+            </div>
+        </section>
+
+        <!-- Nutritional Guide -->
+        <section class="glass-card p-6">
+            <h3 class="text-2xl font-bold mb-6 gradient-text text-center">
+                <i class="fas fa-apple-alt mr-2"></i>
+                دليل التغذية الصحية
+            </h3>
+            <div class="mb-6 flex flex-wrap gap-2 justify-center">
+                <button class="interactive-btn px-4 py-2 rounded-full text-white nutrition-filter active" data-filter="all">الكل</button>
+                <button class="interactive-btn px-4 py-2 rounded-full text-white nutrition-filter" data-filter="vitamins">الفيتامينات</button>
+                <button class="interactive-btn px-4 py-2 rounded-full text-white nutrition-filter" data-filter="minerals">المعادن</button>
+                <button class="interactive-btn px-4 py-2 rounded-full text-white nutrition-filter" data-filter="proteins">البروتينات</button>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4" id="nutritionCards">
+                <!-- Nutrition cards will be generated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Interactive Health Quiz -->
+        <section class="glass-card p-6">
+            <h3 class="text-2xl font-bold mb-6 gradient-text text-center">
+                <i class="fas fa-question-circle mr-2"></i>
+                اختبار الصحة التفاعلي
+            </h3>
+            <div id="quizContainer">
+                <div class="text-center mb-6">
+                    <button class="interactive-btn px-8 py-4 rounded-xl text-white text-xl" onclick="startQuiz()">
+                        <i class="fas fa-play mr-2"></i>
+                        ابدأ الاختبار
+                    </button>
+                </div>
+                <div id="quizContent" class="hidden">
+                    <div class="mb-4">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="quizProgress" style="width: 0%"></div>
+                        </div>
+                        <p class="text-center text-sm mt-2">السؤال <span id="currentQuestion">1</span> من <span id="totalQuestions">5</span></p>
+                    </div>
+                    <div id="questionContainer" class="mb-6">
+                        <!-- Quiz questions will be inserted here -->
+                    </div>
+                    <div class="flex justify-between">
+                        <button class="interactive-btn px-6 py-3 rounded-lg text-white" id="nextBtn" onclick="nextQuestion()" disabled>
+                            التالي
+                            <i class="fas fa-arrow-left mr-2"></i>
+                        </button>
+                        <button class="interactive-btn px-6 py-3 rounded-lg text-white" onclick="restartQuiz()">
+                            <i class="fas fa-redo mr-2"></i>
+                            إعادة البدء
+                        </button>
+                    </div>
+                </div>
+                <div id="quizResults" class="hidden text-center">
+                    <i class="fas fa-trophy text-6xl gradient-text mb-4"></i>
+                    <h4 class="text-2xl font-bold mb-4">نتائج الاختبار</h4>
+                    <div id="scoreDisplay" class="text-4xl font-bold gradient-text mb-4"></div>
+                    <div id="healthAdvice" class="text-lg mb-6"></div>
+                    <button class="interactive-btn px-8 py-3 rounded-xl text-white" onclick="restartQuiz()">
+                        <i class="fas fa-redo mr-2"></i>
+                        إعادة الاختبار
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Health Statistics Chart -->
+        <section class="glass-card p-6">
+            <h3 class="text-2xl font-bold mb-6 gradient-text text-center">
+                <i class="fas fa-chart-bar mr-2"></i>
+                إحصائيات الأمراض الشائعة
+            </h3>
+            <div class="chart-container" style="height: 400px;">
+                <canvas id="healthChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Medical Facts -->
+        <section class="glass-card p-6">
+            <h3 class="text-2xl font-bold mb-6 gradient-text text-center">
+                <i class="fas fa-brain mr-2"></i>
+                حقائق طبية مذهلة
+            </h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div id="medicalFact1" class="nutrition-card p-6 rounded-xl text-center">
+                    <i class="fas fa-heart text-4xl gradient-text mb-4"></i>
+                    <div class="fact-content"></div>
+                </div>
+                <div id="medicalFact2" class="nutrition-card p-6 rounded-xl text-center">
+                    <i class="fas fa-lungs text-4xl gradient-text mb-4"></i>
+                    <div class="fact-content"></div>
+                </div>
+            </div>
+            <div class="text-center mt-6">
+                <button class="interactive-btn px-6 py-3 rounded-lg text-white" onclick="getNewFacts()">
+                    <i class="fas fa-sync-alt mr-2"></i>
+                    حقائق جديدة
+                </button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="glass-card p-6 text-center">
+            <div class="flex justify-center items-center space-x-4 space-x-reverse mb-4">
+                <i class="fas fa-heartbeat text-2xl gradient-text"></i>
+                <h4 class="text-xl font-bold gradient-text">الموسوعة الطبية المتقدمة</h4>
+            </div>
+            <p class="text-sm opacity-80 mb-4">مركزك الشامل للمعلومات الطبية والصحية الموثوقة</p>
+            <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">تواصل معي</h2>
+                <p class="section-subtitle">ابق على تواصل عبر وسائل التواصل الاجتماعي</p>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://t.me/zirxiss" target="_blank" class="social-link telegram">
+                    <i class="fab fa-telegram-plane"></i>
+                    
+                </a>
+                <a href="https://www.instagram.com/zirxis.o?igsh=MWZkZG40ZHg5OHprMA==" target="_blank" class="social-link instagram">
+                    <i class="fab fa-instagram"></i>
+                    
+                </a>
+                <a href="https://x.com/zirxis" target="_blank" class="social-link twitter">
+                    <i class="fab fa-twitter"></i>
+                    
+                </a>
+            </div>
+        </div>
+    </section>
+            <div class="section-divider"></div>
+            <p class="text-xs opacity-60">© 2025 جميع الحقوق محفوظة - تم التطوير من طرف أسامة</p>
+        </footer>
+    </div>
+
+    <script>
+        // Global Variables
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let isDarkMode = false;
+        let searchIndex = [];
+
+        // Health Tips Database
+        const healthTips = [
+            "اشرب 8 أكواب من الماء يومياً للحفاظ على ترطيب جسمك وتحسين وظائف الكلى",
+            "مارس التمارين الرياضية لمدة 30 دقيقة يومياً لتقوية القلب والعضلات",
+            "تناول 5 حصص من الفواكه والخضروات يومياً للحصول على الفيتامينات والمعادن",
+            "احصل على 7-9 ساعات من النوم الجيد لتجديد خلايا الجسم وتحسين التركيز",
+            "قلل من تناول السكر والملح للوقاية من السكري وارتفاع ضغط الدم",
+            "اغسل يديك بانتظام لمدة 20 ثانية للوقاية من الأمراض المعدية",
+            "تجنب التدخين والكحول للحفاظ على صحة الرئتين والكبد",
+            "تناول الأسماك الغنية بالأوميغا 3 مرتين أسبوعياً لصحة القلب والدماغ",
+            "احرص على الفحص الطبي الدوري للكشف المبكر عن الأمراض",
+            "تجنب الجلوس لفترات طويلة وحرك جسمك كل ساعة لتحسين الدورة الدموية",
+            "تناول الإفطار الصحي لبدء يومك بنشاط وطاقة",
+            "قلل من الضغط والتوتر بممارسة التأمل والاسترخاء",
+            "احرص على تناول الكالسيوم وفيتامين د لصحة العظام",
+            "تجنب الأطعمة المصنعة والوجبات السريعة قدر الإمكان",
+            "اقرأ واتعلم أشياء جديدة للحفاظ على صحة الدماغ والذاكرة"
+        ];
+
+        // Medical Facts Database
+        const medicalFacts = [
+            "القلب يضخ حوالي 7,500 لتر من الدم يومياً عبر شبكة من الأوعية الدموية طولها 100,000 كيلومتر",
+            "الدماغ البشري يحتوي على حوالي 86 مليار عصبون ويستهلك 20% من طاقة الجسم",
+            "الكبد يؤدي أكثر من 500 وظيفة حيوية ويمكنه تجديد نفسه بالكامل خلال 6 أشهر",
+            "العين البشرية تستطيع تمييز أكثر من 10 ملايين لون مختلف",
+            "الرئتان تحتويان على حوالي 300 مليون حويصلة هوائية لتبادل الغازات",
+            "العظام أقوى من الفولاذ بأربع مرات وتتجدد بالكامل كل 7-10 سنوات",
+            "الجهاز المناعي يحتوي على أكثر من 1 تريليون خلية مناعية للدفاع عن الجسم",
+            "الكليتان تفلتران حوالي 180 لتر من الدم يومياً وتنتجان 1-2 لتر من البول",
+            "الجلد هو أكبر عضو في الجسم ويتكون من 3 طبقات رئيسية",
+            "المعدة تنتج حوالي 3 لترات من العصارة الهضمية يومياً",
+            "الشعر ينمو بمعدل 15 سم سنوياً والأظافر تنمو 3-4 ملم شهرياً",
+            "القلب يبدأ بالنبض من الأسبوع الثالث للحمل ولا يتوقف حتى الموت"
+        ];
+
+        // Diseases Database
+        const diseases = [
+            {
+                id: 1,
+                name: "السكري",
+                icon: "fas fa-tint",
+                category: "أمراض الغدد الصماء",
+                symptoms: ["العطش الشديد", "كثرة التبول", "فقدان الوزن", "التعب والإرهاق", "بطء شفاء الجروح"],
+                diagnosis: ["فحص السكر الصيامي", "فحص السكر العشوائي", "فحص تحمل الجلوكوز", "فحص السكر التراكمي HbA1c"],
+                treatment: ["تناول الأدوية المناسبة", "اتباع نظام غذائي صحي", "ممارسة الرياضة", "مراقبة مستوى السكر", "المتابعة الطبية الدورية"],
+                prevention: ["الحفاظ على وزن صحي", "ممارسة النشاط البدني", "تناول غذاء متوازن", "تجنب السكريات المكررة", "الفحص الدوري"],
+                prevalence: 15
+            },
+            {
+                id: 2,
+                name: "ارتفاع ضغط الدم",
+                icon: "fas fa-heartbeat",
+                category: "أمراض القلب والأوعية الدموية",
+                symptoms: ["صداع مستمر", "دوخة ودوار", "ضيق في التنفس", "ألم في الصدر", "نزيف من الأنف أحياناً"],
+                diagnosis: ["قياس ضغط الدم المتكرر", "فحص القلب بالموجات فوق الصوتية", "تخطيط القلب", "فحوصات الدم والبول"],
+                treatment: ["تناول أدوية ضغط الدم", "تقليل الملح في الطعام", "ممارسة الرياضة", "تجنب التوتر", "الإقلاع عن التدخين"],
+                prevention: ["اتباع نظام غذائي قليل الصوديوم", "الحفاظ على وزن مثالي", "ممارسة التمارين الرياضية", "تجنب الكحول والتدخين", "إدارة التوتر"],
+                prevalence: 25
+            },
+            {
+                id: 3,
+                name: "الأنيميا (فقر الدم)",
+                icon: "fas fa-user-md",
+                category: "أمراض الدم",
+                symptoms: ["التعب والإرهاق", "شحوب في الوجه", "ضيق في التنفس", "برودة اليدين والقدمين", "تسارع ضربات القلب"],
+                diagnosis: ["فحص تعداد الدم الكامل", "فحص مستوى الحديد", "فحص الفيريتين", "فحص فيتامين B12 وحمض الفوليك"],
+                treatment: ["تناول مكملات الحديد", "تناول الأطعمة الغنية بالحديد", "علاج السبب الأساسي", "نقل الدم في الحالات الشديدة"],
+                prevention: ["تناول اللحوم الحمراء", "تناول الخضروات الورقية", "تناول البقوليات", "تناول فيتامين C مع الحديد", "تجنب شرب الشاي مع الطعام"],
+                prevalence: 20
+            },
+            {
+                id: 4,
+                name: "الربو",
+                icon: "fas fa-lungs",
+                category: "أمراض الجهاز التنفسي",
+                symptoms: ["ضيق في التنفس", "صوت صفير عند التنفس", "سعال مستمر", "ضيق في الصدر", "صعوبة في النوم"],
+                diagnosis: ["اختبار وظائف الرئة", "اختبار الحساسية", "فحص الصدر بالأشعة السينية", "قياس ذروة التدفق"],
+                treatment: ["استخدام البخاخات الموسعة للشعب", "تجنب مسببات الحساسية", "تناول مضادات الالتهاب", "العلاج المناعي", "خطة عمل للربو"],
+                prevention: ["تجنب مثيرات الحساسية", "الحفاظ على نظافة المنزل", "تجنب التدخين", "ممارسة الرياضة بحذر", "التطعيم ضد الإنفلونزا"],
+                prevalence: 10
+            },
+            {
+                id: 5,
+                name: "التهاب المفاصل",
+                icon: "fas fa-bone",
+                category: "أمراض المفاصل والعظام",
+                symptoms: ["ألم في المفاصل", "تورم واحمرار", "تيبس صباحي", "صعوبة في الحركة", "ضعف في العضلات المحيطة"],
+                diagnosis: ["فحص الدم للالتهابات", "أشعة سينية على المفاصل", "الرنين المغناطيسي", "فحص السائل الزلالي"],
+                treatment: ["مضادات الالتهاب", "العلاج الطبيعي", "تمارين التقوية", "الكمادات الباردة والساخنة", "الحقن الموضعية"],
+                prevention: ["الحفاظ على وزن صحي", "ممارسة الرياضة بانتظام", "تناول الكالسيوم وفيتامين D", "تجنب الإصابات", "اتباع نظام غذائي مضاد للالتهابات"],
+                prevalence: 18
+            },
+            {
+                id: 6,
+                name: "القلق والاكتئاب",
+                icon: "fas fa-brain",
+                category: "الصحة النفسية",
+                symptoms: ["الحزن المستمر", "فقدان الاهتمام", "اضطرابات النوم", "تغيرات في الشهية", "صعوبة في التركيز"],
+                diagnosis: ["التقييم النفسي", "استبيانات الاكتئاب والقلق", "فحوصات طبية لاستبعاد أسباب عضوية"],
+                treatment: ["العلاج النفسي", "الأدوية المضادة للاكتئاب", "تغيير نمط الحياة", "تقنيات الاسترخاء", "الدعم الاجتماعي"],
+                prevention: ["ممارسة الرياضة", "الحفاظ على العلاقات الاجتماعية", "إدارة الضغوط", "النوم الكافي", "تجنب الكحول والمخدرات"],
+                prevalence: 12
+            }
+        ];
+
+        // Nutrition Database
+        const nutritionData = [
+            {
+                name: "فيتامين C",
+                category: "vitamins",
+                foods: ["البرتقال", "الليمون", "الكيوي", "الفراولة", "الطماطم", "البروكلي"],
+                benefits: ["تقوية المناعة", "مضاد للأكسدة", "تكوين الكولاجين", "امتصاص الحديد"],
+                icon: "fas fa-lemon"
+            },
+            {
+                name: "فيتامين D",
+                category: "vitamins",
+                foods: ["التعرض للشمس", "الأسماك الدهنية", "صفار البيض", "الحليب المدعم"],
+                benefits: ["صحة العظام", "تقوية المناعة", "صحة العضلات"],
+                icon: "fas fa-sun"
+            },
+            {
+                name: "الحديد",
+                category: "minerals",
+                foods: ["اللحوم الحمراء", "السبانخ", "العدس", "الكبد", "الحمص"],
+                benefits: ["تكوين خلايا الدم الحمراء", "نقل الأكسجين", "الطاقة"],
+                icon: "fas fa-weight-hanging"
+            },
+            {
+                name: "الكالسيوم",
+                category: "minerals",
+                foods: ["الحليب", "الجبن", "اللبن", "السردين", "اللوز", "السمسم"],
+                benefits: ["قوة العظام والأسنان", "تقلص العضلات", "تجلط الدم"],
+                icon: "fas fa-bone"
+            },
+            {
+                name: "البروتين",
+                category: "proteins",
+                foods: ["الدجاج", "السمك", "البيض", "البقوليات", "المكسرات"],
+                benefits: ["بناء العضلات", "إصلاح الأنسجة", "إنتاج الإنزيمات"],
+                icon: "fas fa-drumstick-bite"
+            },
+            {
+                name: "أوميغا 3",
+                category: "proteins",
+                foods: ["السلمون", "التونة", "الجوز", "بذور الكتان", "زيت الزيتون"],
+                benefits: ["صحة القلب", "صحة الدماغ", "مضاد للالتهابات"],
+                icon: "fas fa-fish"
+            },
+            {
+                name: "فيتامين B12",
+                category: "vitamins",
+                foods: ["اللحوم", "الأسماك", "البيض", "منتجات الألبان"],
+                benefits: ["صحة الأعصاب", "تكوين خلايا الدم", "الطاقة"],
+                icon: "fas fa-bolt"
+            },
+            {
+                name: "المغنيسيوم",
+                category: "minerals",
+                foods: ["الموز", "السبانخ", "اللوز", "الأفوكادو", "الحبوب الكاملة"],
+                benefits: ["صحة العضلات", "تنظيم ضغط الدم", "صحة القلب"],
+                icon: "fas fa-heart"
+            }
+        ];
+
+        // Quiz Questions
+        const quizQuestions = [
+            {
+                question: "كم كوب من الماء يجب شربه يومياً؟",
+                options: ["4-5 أكواب", "6-7 أكواب", "8-10 أكواب", "12-15 كوب"],
+                correct: 2,
+                explanation: "يُنصح بشرب 8-10 أكواب من الماء يومياً للحفاظ على ترطيب الجسم"
+            },
+            {
+                question: "كم ساعة نوم يحتاجها البالغ يومياً؟",
+                options: ["5-6 ساعات", "7-9 ساعات", "10-12 ساعة", "4-5 ساعات"],
+                correct: 1,
+                explanation: "البالغون يحتاجون 7-9 ساعات من النوم للحصول على راحة كافية"
+            },
+            {
+                question: "أي من هذه الأطعمة غني بفيتامين C؟",
+                options: ["اللحوم", "البرتقال", "الخبز", "الحليب"],
+                correct: 1,
+                explanation: "البرتقال والحمضيات عموماً غنية جداً بفيتامين C"
+            },
+            {
+                question: "ما هو المعدل الطبيعي لضغط الدم؟",
+                options: ["140/90", "120/80", "160/100", "100/60"],
+                correct: 1,
+                explanation: "المعدل الطبيعي لضغط الدم هو 120/80 مم زئبق"
+            },
+            {
+                question: "كم دقيقة من التمارين الرياضية يُنصح بها يومياً؟",
+                options: ["15 دقيقة", "30 دقيقة", "60 دقيقة", "90 دقيقة"],
+                correct: 1,
+                explanation: "يُنصح بممارسة 30 دقيقة من التمارين المعتدلة يومياً"
+            }
+        ];
+
+        // Initialize the website
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDailyTip();
+            loadMedicalFacts();
+            generateDiseaseCards();
+            generateNutritionCards();
+            setupThemeToggle();
+            setupNutritionFilters();
+            createHealthChart();
+            buildSearchIndex();
+            showWelcomeNotification();
+        });
+
+        // Load daily tip
+        function loadDailyTip() {
+            const tip = healthTips[Math.floor(Math.random() * healthTips.length)];
+            document.getElementById('dailyTip').textContent = tip;
+        }
+
+        // Get new tip
+        function getNewTip() {
+            const tip = healthTips[Math.floor(Math.random() * healthTips.length)];
+            const tipElement = document.getElementById('dailyTip');
+            tipElement.style.opacity = '0';
+            setTimeout(() => {
+                tipElement.textContent = tip;
+                tipElement.style.opacity = '1';
+                showNotification('تم تحديث النصيحة!');
+            }, 300);
+        }
+
+        // Load medical facts
+        function loadMedicalFacts() {
+            const fact1 = medicalFacts[Math.floor(Math.random() * medicalFacts.length)];
+            let fact2 = medicalFacts[Math.floor(Math.random() * medicalFacts.length)];
+            while (fact2 === fact1) {
+                fact2 = medicalFacts[Math.floor(Math.random() * medicalFacts.length)];
+            }
+            
+            document.querySelector('#medicalFact1 .fact-content').textContent = fact1;
+            document.querySelector('#medicalFact2 .fact-content').textContent = fact2;
+        }
+
+        // Get new facts
+        function getNewFacts() {
+            loadMedicalFacts();
+            showNotification('تم تحديث الحقائق الطبية!');
+        }
+
+        // Generate disease cards
+        function generateDiseaseCards() {
+            const container = document.getElementById('diseaseCards');
+            container.innerHTML = '';
+            
+            diseases.forEach(disease => {
+                const card = document.createElement('div');
+                card.className = 'disease-card p-6 rounded-xl cursor-pointer fade-in';
+                card.onclick = () => showDiseaseDetails(disease);
+                
+                card.innerHTML = `
+                    <div class="text-center">
+                        <i class="${disease.icon} text-4xl gradient-text mb-4"></i>
+                        <h4 class="text-xl font-bold mb-2">${disease.name}</h4>
+                        <p class="text-sm opacity-80 mb-4">${disease.category}</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                            <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full" style="width: ${disease.prevalence}%"></div>
+                        </div>
+                        <p class="text-xs">انتشار: ${disease.prevalence}%</p>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Show disease details
+        function showDiseaseDetails(disease) {
+            const detailsContainer = document.getElementById('diseaseDetails');
+            const contentContainer = document.getElementById('diseaseContent');
+            
+            contentContainer.innerHTML = `
+                <div class="text-center mb-6">
+                    <i class="${disease.icon} text-6xl gradient-text mb-4"></i>
+                    <h3 class="text-3xl font-bold gradient-text">${disease.name}</h3>
+                    <p class="text-lg opacity-80">${disease.category}</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="nutrition-card p-6 rounded-xl">
+                        <h4 class="text-xl font-bold mb-4 text-red-400">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            الأعراض
+                        </h4>
+                        <ul class="space-y-2">
+                            ${disease.symptoms.map(symptom => `<li class="flex items-center"><i class="fas fa-dot-circle text-red-400 mr-2 text-xs"></i>${symptom}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition-card p-6 rounded-xl">
+                        <h4 class="text-xl font-bold mb-4 text-blue-400">
+                            <i class="fas fa-stethoscope mr-2"></i>
+                            التشخيص
+                        </h4>
+                        <ul class="space-y-2">
+                            ${disease.diagnosis.map(method => `<li class="flex items-center"><i class="fas fa-dot-circle text-blue-400 mr-2 text-xs"></i>${method}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition-card p-6 rounded-xl">
+                        <h4 class="text-xl font-bold mb-4 text-green-400">
+                            <i class="fas fa-pills mr-2"></i>
+                            العلاج
+                        </h4>
+                        <ul class="space-y-2">
+                            ${disease.treatment.map(treatment => `<li class="flex items-center"><i class="fas fa-dot-circle text-green-400 mr-2 text-xs"></i>${treatment}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="nutrition-card p-6 rounded-xl">
+                        <h4 class="text-xl font-bold mb-4 text-purple-400">
+                            <i class="fas fa-shield-alt mr-2"></i>
+                            الوقاية
+                        </h4>
+                        <ul class="space-y-2">
+                            ${disease.prevention.map(prevention => `<li class="flex items-center"><i class="fas fa-dot-circle text-purple-400 mr-2 text-xs"></i>${prevention}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            detailsContainer.classList.remove('hidden');
+            detailsContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Close disease details
+        function closeDiseaseDetails() {
+            document.getElementById('diseaseDetails').classList.add('hidden');
+        }
+
+        // Generate nutrition cards
+        function generateNutritionCards() {
+            const container = document.getElementById('nutritionCards');
+            container.innerHTML = '';
+            
+            nutritionData.forEach(nutrition => {
+                const card = document.createElement('div');
+                card.className = `nutrition-card p-4 rounded-xl fade-in nutrition-item ${nutrition.category}`;
+                
+                card.innerHTML = `
+                    <div class="text-center mb-4">
+                        <i class="${nutrition.icon} text-3xl gradient-text mb-2"></i>
+                        <h4 class="text-lg font-bold">${nutrition.name}</h4>
+                    </div>
+                    <div class="mb-4">
+                        <h5 class="font-bold mb-2 text-yellow-300">المصادر الغذائية:</h5>
+                        <div class="flex flex-wrap gap-1">
+                            ${nutrition.foods.map(food => `<span class="bg-white bg-opacity-20 px-2 py-1 rounded-full text-xs">${food}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div>
+                        <h5 class="font-bold mb-2 text-green-300">الفوائد:</h5>
+                        <ul class="text-sm space-y-1">
+                            ${nutrition.benefits.map(benefit => `<li class="flex items-center"><i class="fas fa-check text-green-300 mr-2 text-xs"></i>${benefit}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Setup nutrition filters
+        function setupNutritionFilters() {
+            const filterButtons = document.querySelectorAll('.nutrition-filter');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    const items = document.querySelectorAll('.nutrition-item');
+                    
+                    items.forEach(item => {
+                        if (filter === 'all' || item.classList.contains(filter)) {
+                            item.style.display = 'block';
+                            item.style.opacity = '0';
+                            setTimeout(() => {
+                                item.style.opacity = '1';
+                            }, 100);
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+
+        // BMI Calculator
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value) / 100; // Convert to meters
+            
+            if (!weight || !height) {
+                showNotification('يرجى إدخال الوزن والطول بشكل صحيح');
+                return;
+            }
+            
+            const bmi = weight / (height * height);
+            const bmiResult = document.getElementById('bmiResult');
+            const bmiProgress = document.getElementById('bmiProgress');
+            
+            let category, color, progressWidth;
+            
+            if (bmi < 18.5) {
+                category = 'نقص في الوزن';
+                color = 'text-blue-400';
+                progressWidth = 20;
+            } else if (bmi < 25) {
+                category = 'وزن طبيعي';
+                color = 'text-green-400';
+                progressWidth = 50;
+            } else if (bmi < 30) {
+                category = 'زيادة في الوزن';
+                color = 'text-yellow-400';
+                progressWidth = 75;
+            } else {
+                category = 'سمنة';
+                color = 'text-red-400';
+                progressWidth = 100;
+            }
+            
+            bmiResult.innerHTML = `
+                <div class="${color}">
+                    مؤشر كتلة الجسم: ${bmi.toFixed(1)}
+                </div>
+                <div class="text-sm mt-2">${category}</div>
+            `;
+            
+            bmiProgress.style.width = progressWidth + '%';
+            showNotification('تم حساب مؤشر كتلة الجسم بنجاح!');
+        }
+
+        // Calorie Calculator
+        function calculateCalories() {
+            const age = parseInt(document.getElementById('age').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const gender = document.getElementById('gender').value;
+            const activity = parseFloat(document.getElementById('activity').value);
+            
+            if (!age || !weight || !height || !gender || !activity) {
+                showNotification('يرجى ملء جميع الحقول');
+                return;
+            }
+            
+            let bmr;
+            if (gender === 'male') {
+                bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+            } else {
+                bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+            }
+            
+            const calories = Math.round(bmr * activity);
+            
+            document.getElementById('calorieResult').innerHTML = `
+                <div class="text-green-400">
+                    احتياجك اليومي: ${calories} سعرة حرارية
+                </div>
+                <div class="text-sm mt-2">معدل الأيض الأساسي: ${Math.round(bmr)} سعرة</div>
+            `;
+            
+            showNotification('تم حساب احتياجك من السعرات الحرارية!');
+        }
+
+        // Quiz Functions
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            document.getElementById('quizContent').classList.remove('hidden');
+            document.getElementById('quizResults').classList.add('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentQuestionIndex >= quizQuestions.length) {
+                showQuizResults();
+                return;
+            }
+            
+            const question = quizQuestions[currentQuestionIndex];
+            const container = document.getElementById('questionContainer');
+            
+            container.innerHTML = `
+                <h4 class="text-xl font-bold mb-6 text-center">${question.question}</h4>
+                <div class="space-y-3">
+                    ${question.options.map((option, index) => `
+                        <div class="quiz-option p-4 rounded-lg" onclick="selectOption(${index})" data-option="${index}">
+                            ${option}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('totalQuestions').textContent = quizQuestions.length;
+            document.getElementById('nextBtn').disabled = true;
+            
+            // Update progress
+            const progress = ((currentQuestionIndex + 1) / quizQuestions.length) * 100;
+            document.getElementById('quizProgress').style.width = progress + '%';
+        }
+
+        function selectOption(optionIndex) {
+            // Remove previous selections
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            document.querySelector(`[data-option="${optionIndex}"]`).classList.add('selected');
+            
+            // Store user answer
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            showQuestion();
+        }
+
+        function showQuizResults() {
+            let score = 0;
+            for (let i = 0; i < userAnswers.length; i++) {
+                if (userAnswers[i] === quizQuestions[i].correct) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / quizQuestions.length) * 100);
+            
+            document.getElementById('quizContent').classList.add('hidden');
+            document.getElementById('quizResults').classList.remove('hidden');
+            document.getElementById('scoreDisplay').textContent = `${score}/${quizQuestions.length} (${percentage}%)`;
+            
+            let advice;
+            if (percentage >= 80) {
+                advice = 'ممتاز! لديك معرفة جيدة بالصحة العامة. استمر في اتباع العادات الصحية.';
+            } else if (percentage >= 60) {
+                advice = 'جيد! لديك معرفة أساسية بالصحة. ننصحك بالمزيد من القراءة حول الصحة العامة.';
+            } else {
+                advice = 'يحتاج الأمر لمزيد من التعلم. ننصحك بمراجعة المزيد من المعلومات الصحية وزيارة الطبيب للفحص الدوري.';
+            }
+            
+            document.getElementById('healthAdvice').textContent = advice;
+            showNotification(`تم إنهاء الاختبار! النتيجة: ${percentage}%`);
+        }
+
+        function restartQuiz() {
+            document.getElementById('quizContent').classList.add('hidden');
+            document.getElementById('quizResults').classList.add('hidden');
+            currentQuestionIndex = 0;
+            userAnswers = [];
+        }
+
+        // Search functionality
+        function buildSearchIndex() {
+            searchIndex = [];
+            
+            // Add health tips
+            healthTips.forEach((tip, index) => {
+                searchIndex.push({
+                    type: 'tip',
+                    content: tip,
+                    title: 'نصيحة صحية',
+                    id: index
+                });
+            });
+            
+            // Add diseases
+            diseases.forEach(disease => {
+                searchIndex.push({
+                    type: 'disease',
+                    content: disease.name + ' ' + disease.symptoms.join(' ') + ' ' + disease.category,
+                    title: disease.name,
+                    data: disease
+                });
+            });
+            
+            // Add nutrition data
+            nutritionData.forEach(nutrition => {
+                searchIndex.push({
+                    type: 'nutrition',
+                    content: nutrition.name + ' ' + nutrition.foods.join(' ') + ' ' + nutrition.benefits.join(' '),
+                    title: nutrition.name,
+                    data: nutrition
+                });
+            });
+            
+            // Add medical facts
+            medicalFacts.forEach((fact, index) => {
+                searchIndex.push({
+                    type: 'fact',
+                    content: fact,
+                    title: 'حقيقة طبية',
+                    id: index
+                });
+            });
+        }
+
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            const resultsContainer = document.getElementById('searchResults');
+            
+            if (query.length < 2) {
+                resultsContainer.classList.add('hidden');
+                return;
+            }
+            
+            const results = searchIndex.filter(item => 
+                item.content.toLowerCase().includes(query.toLowerCase()) ||
+                item.title.toLowerCase().includes(query.toLowerCase())
+            ).slice(0, 5);
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<p class="text-center p-4 text-gray-300">لم يتم العثور على نتائج</p>';
+            } else {
+                resultsContainer.innerHTML = results.map(result => `
+                    <div class="glass-card p-4 mb-2 cursor-pointer hover:bg-white hover:bg-opacity-10" onclick="selectSearchResult('${result.type}', ${JSON.stringify(result).replace(/"/g, '&quot;')})">
+                        <h5 class="font-bold text-yellow-300">${result.title}</h5>
+                        <p class="text-sm opacity-80">${result.content.substring(0, 100)}...</p>
+                    </div>
+                `).join('');
+            }
+            
+            resultsContainer.classList.remove('hidden');
+        }
+
+        function selectSearchResult(type, result) {
+            const data = typeof result === 'string' ? JSON.parse(result) : result;
+            
+            if (type === 'disease') {
+                showDiseaseDetails(data.data);
+            } else if (type === 'tip') {
+                document.getElementById('dailyTip').textContent = data.content;
+                document.getElementById('searchInput').value = '';
+                document.getElementById('searchResults').classList.add('hidden');
+                showNotification('تم عرض النصيحة المطلوبة!');
+            }
+        }
+
+        // Create health statistics chart
+        function createHealthChart() {
+            const ctx = document.getElementById('healthChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: diseases.map(d => d.name),
+                    datasets: [{
+                        data: diseases.map(d => d.prevalence),
+                        backgroundColor: [
+                            '#667eea',
+                            '#764ba2', 
+                            '#f093fb',
+                            '#f5576c',
+                            '#4facfe',
+                            '#43e97b'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#ffffff',
+                                font: {
+                                    family: 'Tajawal',
+                                    size: 12
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'معدلات انتشار الأمراض الشائعة (%)',
+                            color: '#ffffff',
+                            font: {
+                                family: 'Tajawal',
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Theme toggle functionality
+        function setupThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            
+            themeToggle.addEventListener('click', function() {
+                isDarkMode = !isDarkMode;
+                document.body.classList.toggle('dark-mode');
+                this.classList.toggle('active');
+                
+                if (isDarkMode) {
+                    showNotification('تم تفعيل الوضع الليلي');
+                } else {
+                    showNotification('تم تفعيل الوضع النهاري');
+                }
+            });
+        }
+
+        // Notification system
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function showWelcomeNotification() {
+            setTimeout(() => {
+                showNotification('مرحباً بك في الموسوعة الطبية المتقدمة!');
+            }, 1000);
+        }
+
+        // Add smooth scrolling for all internal links
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('a[href^="#"]')) {
+                e.preventDefault();
+                const target = document.querySelector(e.target.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+
+        // Add loading animations
+        function showLoading() {
+            return '<div class="loading-spinner"></div>';
+        }
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards for animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.glass-card, .disease-card, .nutrition-card');
+            cards.forEach(card => observer.observe(card));
+        });
+    </script>
+</body>
+</html>
